@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
 import { Task2Service } from './task2.service';
 
@@ -7,7 +7,7 @@ import { Task2Service } from './task2.service';
   templateUrl: './task2.component.html',
   styleUrls: ['./task2.component.scss'],
 })
-export class Task2Component implements OnInit {
+export class Task2Component implements OnInit, OnDestroy {
   constructor(private task2Service: Task2Service) {}
   randomNumbers$$: Observable<number[]> = this.task2Service.randomNumbers$$;
   randomNumbersSub: Subscription | undefined;
@@ -44,7 +44,11 @@ export class Task2Component implements OnInit {
       .subscribe();
   }
 
-  onAddNumber() {
+  ngOnDestroy() {
+    this.randomNumbersSub?.unsubscribe();
+  }
+
+  onAddRandomNumber() {
     this.task2Service.addRandomNumber();
   }
 }

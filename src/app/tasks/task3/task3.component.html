@@ -7,20 +7,20 @@
 </div>
 
 <div class='m-2'>
-  <button class='btn btn-primary'>Add random number</button>
+  <button class='btn btn-primary' (click)="onAddRandomNumber()" [disabled]="isHttpLoading$$ | async">Add random number</button>
 </div>
 
 <div class='m-2 row'>
   <div  class='col col-3'>
-    <div>Numbers in collection: </div>
-    <div>2</div>
+    <div>Numbers in collection:</div>
+    <div *ngFor="let number of randomNumbers$$ | async"> {{ number }}</div>
   </div>
 
-  <div class='col col-3' style='color: black'>
+  <div class='col col-3' style='color: black' *ngIf="stats$$ | async as stats">
     <div>Statistics: (вторая часть задачи)</div>
-    <div>Count: 1</div>
-    <div>Min: 2</div>
-    <div>Max: 3</div>
-    <div>Average: 4</div>
+    <div>Count: {{ stats.count }}</div>
+    <div>Min: {{ stats.min }}</div>
+    <div>Max: {{ stats.max }}</div>
+    <div>Average: {{ stats.average }}</div>
   </div>
 </div>

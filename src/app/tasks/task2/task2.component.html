@@ -15,7 +15,7 @@
     <li>среднее значение из всех чисел</li>
   </ul>
 
-  <button  class='btn btn-primary' (click)="onAddNumber()">Add random number</button>
+  <button  class='btn btn-primary' (click)="onAddRandomNumber()">Add random number</button>
 </div>
 
 <div class='m-2 row'>
@@ -24,7 +24,7 @@
     <p *ngFor="let number of randomNumbers$$ | async">{{ number }}</p>
   </div>
 
-  <div class='col col-3' style='color: black'*ngIf="stats$$ | async as stats" >
+  <div class='col col-3' style='color: black' *ngIf="stats$$ | async as stats" >
     <div>Statistics: (вторая часть задачи)</div>
     <div>Count: {{ stats.count }} </div>
     <div>Min: {{ stats.min }}</div>
