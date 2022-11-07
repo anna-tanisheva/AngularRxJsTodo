@@ -15,20 +15,20 @@
     <li>среднее значение из всех чисел</li>
   </ul>
 
-  <button  class='btn btn-primary'>Add random number</button>
+  <button  class='btn btn-primary' (click)="onAddNumber()">Add random number</button>
 </div>
 
 <div class='m-2 row'>
   <div  class='col col-3'>
     <div>Numbers in collection: </div>
-   0, 20, 30, 40
+    <p *ngFor="let number of randomNumbers$$ | async">{{ number }}</p>
   </div>
 
-  <div class='col col-3' style='color: black'>
+  <div class='col col-3' style='color: black'*ngIf="stats$$ | async as stats" >
     <div>Statistics: (вторая часть задачи)</div>
-    <div>Count: 0</div>
-    <div>Min: 1</div>
-    <div>Max: 2</div>
-    <div>Average: 3</div>
+    <div>Count: {{ stats.count }} </div>
+    <div>Min: {{ stats.min }}</div>
+    <div>Max: {{ stats.max }}</div>
+    <div>Average: {{ stats.average }}</div>
   </div>
 </div>
