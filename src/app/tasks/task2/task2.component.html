@@ -24,7 +24,7 @@
     <p *ngFor="let number of randomNumbers$$ | async">{{ number }}</p>
   </div>
 
-  <div class='col col-3' style='color: black' *ngIf="stats$$ | async as stats" >
+  <div class='col col-3' style='color: black' *ngIf="numbersArrStats$$ | async as stats" >
     <div>Statistics: (вторая часть задачи)</div>
     <div>Count: {{ stats.count }} </div>
     <div>Min: {{ stats.min }}</div>

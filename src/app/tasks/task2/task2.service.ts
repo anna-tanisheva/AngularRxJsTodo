@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, tap } from 'rxjs';
 
 export interface IStore {
   randomNumbers: number[];
@@ -13,6 +13,34 @@ export class Task2Service {
 
   public randomNumbers$$: Observable<number[]> = this._store.pipe(
     map((store) => store.randomNumbers)
+  );
+
+  public numbersStats$$: Observable<{
+    count: number;
+    min: number;
+    max: number;
+    average: number;
+  }> = this._store.pipe(
+    map((store) => {
+      store.randomNumbers;
+      return {
+        count: store.randomNumbers.length,
+        min:
+          store.randomNumbers.length > 0
+            ? Math.min.apply(null, store.randomNumbers)
+            : 0,
+        max:
+          store.randomNumbers.length > 0
+            ? Math.max.apply(null, store.randomNumbers)
+            : 0,
+        average:
+          store.randomNumbers.length > 0
+            ? store.randomNumbers.reduce((a, b) => {
+                return a + b;
+              }, 0) / store.randomNumbers.length
+            : 0,
+      };
+    })
   );
 
   public addRandomNumber(): void {
