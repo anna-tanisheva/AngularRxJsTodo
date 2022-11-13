@@ -7,16 +7,14 @@ import { Task2Service } from './task2.service';
   templateUrl: './task2.component.html',
   styleUrls: ['./task2.component.scss'],
 })
-// implements OnInit, OnDestroy
 export class Task2Component {
-  constructor(private task2Service: Task2Service) {}
   randomNumbers$$: Observable<number[]> = this.task2Service.randomNumbers$$;
-  numbersArrStats$$: Observable<{
-    count: number;
-    min: number;
-    max: number;
-    average: number;
-  }> = this.task2Service.numbersStats$$;
+  countNumbers$$: Observable<number> = this.task2Service.countNumbers$$;
+  minNumber$$: Observable<number> = this.task2Service.minNumber$$;
+  maxNumber$$: Observable<number> = this.task2Service.maxNumber$$;
+  average$$: Observable<number> = this.task2Service.average$$;
+
+  constructor(private task2Service: Task2Service) {}
 
   onAddRandomNumber() {
     this.task2Service.addRandomNumber();
