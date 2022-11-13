@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, tap } from 'rxjs';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Task3Service } from './task3.service';
 
 @Component({
@@ -10,15 +10,13 @@ import { Task3Service } from './task3.service';
 export class Task3Component {
   constructor(private task3Service: Task3Service) {}
   randomNumbers$$: Observable<number[]> = this.task3Service.randomNumbers$$;
-  numbersArrStats$$: Observable<{
-    count: number;
-    min: number;
-    max: number;
-    average: number;
-  }> = this.task3Service.numbersStats$$;
   isHttpLoading$$: Observable<boolean> = this.task3Service.isLoading$$;
+  countNumbers$$: Observable<number> = this.task3Service.countNumbers$$;
+  minNumber$$: Observable<number> = this.task3Service.minNumber$$;
+  maxNumber$$: Observable<number> = this.task3Service.maxNumber$$;
+  average$$: Observable<number> = this.task3Service.average$$;
 
   onAddRandomNumber() {
-    this.task3Service.addRandomNumber$().subscribe();
+    this.task3Service.addRandomNumber$();
   }
 }

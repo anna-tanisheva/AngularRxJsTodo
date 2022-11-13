@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export interface IStore {
@@ -9,6 +9,7 @@ export interface IStore {
 
 @Injectable({ providedIn: 'root' })
 export class Task3Service {
+  constructor(private _http: HttpClient) {}
   private _store: BehaviorSubject<IStore> = new BehaviorSubject<IStore>({
     randomNumbers: [],
     isHttpLoading: false,
@@ -19,36 +20,33 @@ export class Task3Service {
   public isLoading$$: Observable<boolean> = this._store.pipe(
     map((store) => store.isHttpLoading)
   );
-  public numbersStats$$: Observable<{
-    count: number;
-    min: number;
-    max: number;
-    average: number;
-  }> = this._store.pipe(
+  public countNumbers$$: Observable<number> = this._store.pipe(
     map((store) => {
-      store.randomNumbers;
-      return {
-        count: store.randomNumbers.length,
-        min:
-          store.randomNumbers.length > 0
-            ? Math.min.apply(null, store.randomNumbers)
-            : 0,
-        max:
-          store.randomNumbers.length > 0
-            ? Math.max.apply(null, store.randomNumbers)
-            : 0,
-        average:
-          store.randomNumbers.length > 0
-            ? store.randomNumbers.reduce((a, b) => {
-                return a + b;
-              }, 0) / store.randomNumbers.length
-            : 0,
-      };
+      return store.randomNumbers.length;
     })
   );
-
-  constructor(private _http: HttpClient) {}
-
+  public minNumber$$: Observable<number> = this._store.pipe(
+    map((store) => {
+      if (store.randomNumbers.length === 0) return 0;
+      return Math.min.apply(null, store.randomNumbers);
+    })
+  );
+  public maxNumber$$: Observable<number> = this._store.pipe(
+    map((store) => {
+      if (store.randomNumbers.length === 0) return 0;
+      return Math.max.apply(null, store.randomNumbers);
+    })
+  );
+  public average$$: Observable<number> = this._store.pipe(
+    map((store) => {
+      if (store.randomNumbers.length === 0) return 0;
+      return (
+        store.randomNumbers.reduce((a, b) => {
+          return a + b;
+        }, 0) / store.randomNumbers.length
+      );
+    })
+  );
   public addRandomNumber$(): Observable<void> {
     this._updateStore({ isHttpLoading: true });
     this._http
@@ -63,12 +61,15 @@ export class Task3Service {
             randomNumbers: randomNumbersArr,
             isHttpLoading: false,
           });
+        }),
+        catchError((error) => {
+          console.log(error);
+          return of(error);
         })
       )
       .subscribe();
     return of();
   }
-
   private _updateStore(data: Partial<IStore>): void {
     this._store.next({ ...this._store.getValue(), ...data });
   }
